@@ -7,7 +7,7 @@ interface NavbarProps {
 }
 
 export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate, darkHero = false }) => {
-  const isLightText = darkHero && currentRoute === 'landing';
+  const isLightText = darkHero;
 
   return (
     <header className="w-full z-50 transition-colors duration-200">

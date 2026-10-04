@@ -7,7 +7,7 @@ import { ExperienceItem } from '../components/about/ExperienceItem';
 import { SoftwareIcon } from '../components/about/SoftwareIcon';
 import { SocialLinks } from '../components/common/SocialLinks';
 import type { Profile, SoftwareItem } from '../data/portfolio';
-import { fadeUp, scaleIn, slideInLeft, slideInRight, staggerContainer, VIEWPORT_ONCE } from '../utils/motion';
+import { fadeUp, slideInLeft, slideInRight, staggerContainer, VIEWPORT_ONCE } from '../utils/motion';
 
 interface AboutPageProps {
   profile: Profile;
@@ -22,29 +22,63 @@ export const AboutPage: React.FC<AboutPageProps> = ({
 }) => {
   return (
     <div className="w-full min-h-screen flex flex-col bg-[#F4F4F2] text-[#080808]">
-      {/* SECTION 1 — NAVIGATION */}
-      <Navbar currentRoute="about" onNavigate={onNavigate} darkHero={false} />
-
-      {/* SECTION 2 — PROFILE HERO */}
-      <motion.section
-        className="w-full max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12 my-4 sm:my-8 md:my-10"
-        variants={scaleIn}
-        initial="hidden"
-        animate="visible"
-      >
-        <div className="relative w-full rounded-sm overflow-hidden bg-black/10 border border-neutral-300">
-          {/* Main Cinematic Visual with HUD Reticles */}
+      {/* SECTION 1 & 2 — FULL-SCREEN PROFILE HERO BANNER */}
+      <section className="relative w-full h-[100svh] min-h-[560px] sm:min-h-[640px] md:min-h-[720px] flex flex-col justify-between overflow-hidden bg-[#080808]">
+        {/* Background Visual Banner */}
+        <motion.div
+          initial={{ opacity: 0, scale: 1.04 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+          className="absolute inset-0 w-full h-full pointer-events-none overflow-hidden"
+        >
           <img
-            src="/assets/images/resumeonly-01-05.jpg"
-            alt="Aryan Nikam — The Balya HUD"
-            className="w-full h-auto object-cover filter contrast-105"
+            src="/assets/images/images-01.png"
+            alt="Aryan Nikam — The Balya"
+            className="w-full h-full object-cover object-center scale-[1.01] filter brightness-95 contrast-[1.04]"
+            loading="eager"
+            fetchPriority="high"
           />
-        </div>
-      </motion.section>
 
-      {/* SECTION 4 — ABOUT ME & BIOGRAPHY */}
+          {/* Calibrated Contrast Overlays */}
+          {/* 1. Global dark scrim for deep cinematic tones */}
+          <div className="absolute inset-0 bg-black/30 pointer-events-none" />
+
+          {/* 2. Top-down gradient for razor-sharp navigation legibility */}
+          <div className="absolute top-0 left-0 right-0 h-44 sm:h-52 bg-gradient-to-b from-black/85 via-black/45 to-transparent pointer-events-none" />
+
+          {/* 3. Bottom-up gradient for smooth transition */}
+          <div className="absolute bottom-0 left-0 right-0 h-48 sm:h-64 bg-gradient-to-t from-[#080808]/90 via-black/40 to-transparent pointer-events-none" />
+        </motion.div>
+
+        {/* Top Floating Navigation */}
+        <div className="relative z-30 w-full">
+          <Navbar currentRoute="about" onNavigate={onNavigate} darkHero={true} />
+        </div>
+
+        {/* Bottom Minimal Scroll Indicator */}
+        <div className="relative z-20 w-full pb-4 sm:pb-6 md:pb-8 flex flex-col items-center">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 0.5 }}
+            className="flex flex-col items-center gap-1 cursor-pointer group p-2"
+            onClick={() => {
+              const bioSection = document.getElementById('about-bio');
+              bioSection?.scrollIntoView({ behavior: 'smooth' });
+            }}
+          >
+            <span className="font-mono text-[9px] sm:text-[10px] tracking-[0.28em] text-white/80 uppercase group-hover:text-[#00F000] transition-colors drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">
+              SCROLL TO EXPLORE
+            </span>
+            <span className="text-[#00F000] text-xs sm:text-sm animate-bounce font-mono">↓</span>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* SECTION 3 — ABOUT ME & BIOGRAPHY */}
       <motion.section
-        className="w-full max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12 py-8 sm:py-16 md:py-20"
+        id="about-bio"
+        className="w-full max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12 py-12 sm:py-20 md:py-28"
         variants={staggerContainer(0.15)}
         initial="hidden"
         whileInView="visible"

@@ -88,27 +88,6 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
         </button>
       </motion.nav>
 
-      {/* ── Center/Supporting Tagline in High-Contrast Frosted Glass Capsule ── */}
-      <div className="relative z-20 w-full text-center px-4 flex justify-center">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.9, delay: 0.5 }}
-          className="inline-flex items-center gap-x-2 sm:gap-x-3 gap-y-1 flex-wrap justify-center px-4 sm:px-6 py-1.5 sm:py-2 rounded-full bg-black/65 backdrop-blur-md border border-white/20 shadow-2xl"
-        >
-          <span className="font-mono text-[10px] sm:text-xs md:text-sm tracking-[0.22em] text-white font-semibold uppercase">
-            AI
-          </span>
-          <span className="text-[#00F000] font-mono font-bold text-xs sm:text-sm">/</span>
-          <span className="font-mono text-[10px] sm:text-xs md:text-sm tracking-[0.22em] text-white font-semibold uppercase">
-            MOTION
-          </span>
-          <span className="text-[#00F000] font-mono font-bold text-xs sm:text-sm">/</span>
-          <span className="font-mono text-[10px] sm:text-xs md:text-sm tracking-[0.22em] text-white font-semibold uppercase">
-            VISUAL STORYTELLING
-          </span>
-        </motion.div>
-      </div>
 
       {/* ── Bottom Hero Oversized Typography "THE BALYA ®" ── */}
       <div className="relative z-20 w-full pb-3 sm:pb-6 md:pb-8 flex flex-col items-center">
