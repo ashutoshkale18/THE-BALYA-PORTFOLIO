@@ -1,0 +1,124 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    /* Colors */
+    --color-primary-black: #080808;
+    --color-primary-white: #FFFFFF;
+    --color-electric-green: #00F000;
+    --color-light-bg: #F4F4F2;
+    --color-secondary-gray: #858585;
+    --color-border-subtle: #D8D8D6;
+    --color-border-dark: #222222;
+
+    /* Typography */
+    --font-work: 'Bebas Neue', 'Teko', 'Barlow Condensed', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-display: 'Bebas Neue', 'Anton', 'Archivo Black', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-body: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+
+    /* Transitions */
+    --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-smooth: 300ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  body {
+    background-color: var(--color-light-bg);
+    color: var(--color-primary-black);
+    font-family: var(--font-body);
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* Custom Typography Utility Classes */
+.font-work {
+  font-family: var(--font-work);
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+.font-body {
+  font-family: var(--font-body);
+}
+
+.font-mono {
+  font-family: var(--font-mono);
+}
+
+/* Performance: Offscreen content visibility */
+.section-lazy {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 650px;
+}
+
+/* Diagonal hazard stripes pattern */
+.bg-hazard-stripes {
+  background: repeating-linear-gradient(
+    -45deg,
+    #080808,
+    #080808 14px,
+    #00F000 14px,
+    #00F000 28px
+  );
+}
+
+.bg-hazard-stripes-sm {
+  background: repeating-linear-gradient(
+    -45deg,
+    #080808,
+    #080808 6px,
+    #00F000 6px,
+    #00F000 12px
+  );
+}
+
+.bg-hazard-stripes-white {
+  background: repeating-linear-gradient(
+    -45deg,
+    #FFFFFF,
+    #FFFFFF 14px,
+    #00F000 14px,
+    #00F000 28px
+  );
+}
+
+/* Infinite Marquee Animation */
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 28s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #080808;
+}
+::-webkit-scrollbar-thumb {
+  background: #00F000;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #10d410;
+}
