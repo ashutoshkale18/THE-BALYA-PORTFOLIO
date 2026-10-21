@@ -7,25 +7,22 @@ interface GreenDividerProps {
 
 export const GreenDivider: React.FC<GreenDividerProps> = ({
   className = '',
-  heightClass = 'h-6 sm:h-10 md:h-12'
+  heightClass = 'h-14 sm:h-16 md:h-20'
 }) => {
   return (
-    <div className={`w-full overflow-hidden flex bg-[#00F000] ${heightClass} ${className}`}>
-      {/* Left diagonal striped section — narrow black slashes on green like reference design */}
-      <div className="w-[200px] sm:w-[300px] md:w-[400px] h-full flex-shrink-0 relative overflow-hidden">
-        <svg className="w-full h-full" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <pattern id="divider-stripes" width="32" height="32" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)">
-              <rect width="32" height="32" fill="#00F000" />
-              <rect width="10" height="32" fill="#080808" />
-            </pattern>
-          </defs>
-          <rect width="100%" height="100%" fill="url(#divider-stripes)" />
-        </svg>
+    <div className={`w-full overflow-hidden flex bg-[#00FF00] ${heightClass} relative ${className}`}>
+      {/* Left diagonal black stripes matching footer stripe exactly */}
+      <div className="w-[180px] sm:w-[280px] md:w-[420px] lg:w-[500px] h-full absolute left-0 top-0 overflow-hidden pointer-events-none">
+        <img
+          src="/assets/header_and_footer_elements/header_and_footer_elements-02.png"
+          alt=""
+          aria-hidden="true"
+          className="w-full h-full object-cover object-left"
+        />
       </div>
 
-      {/* Right solid electric green section */}
-      <div className="flex-1 bg-[#00F000]" />
+      {/* Right solid electric green section with seamless #00FF00 match */}
+      <div className="flex-1 bg-[#00FF00]" />
     </div>
   );
 };

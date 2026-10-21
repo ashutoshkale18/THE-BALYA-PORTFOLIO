@@ -5,7 +5,7 @@ import { SectionHeading } from '../components/common/SectionHeading';
 import { FloatingResumeCard } from '../components/about/FloatingResumeCard';
 import { ExperienceItem } from '../components/about/ExperienceItem';
 import { SoftwareIcon } from '../components/about/SoftwareIcon';
-import { SocialLinks } from '../components/common/SocialLinks';
+import { FooterStrip } from '../components/common/FooterStrip';
 import type { Profile, SoftwareItem } from '../data/portfolio';
 import { fadeUp, slideInLeft, slideInRight, staggerContainer, VIEWPORT_ONCE } from '../utils/motion';
 
@@ -85,7 +85,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({
         viewport={VIEWPORT_ONCE}
       >
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 sm:gap-12 lg:gap-16 items-start">
-          
+
           {/* Left Column: Heading, Biography & Personal Details */}
           <motion.div variants={slideInLeft} className="lg:col-span-7 flex flex-col items-start space-y-6 sm:space-y-8">
             <SectionHeading title="ABOUT ME." />
@@ -207,24 +207,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({
       </motion.section>
 
       {/* SECTION 9 — FOOTER */}
-      <div className="w-full h-14 sm:h-16 bg-[#00F000] flex items-center justify-between px-4 sm:px-8 lg:px-12 relative overflow-hidden mt-auto">
-        {/* Left diagonal black stripes */}
-        <div className="w-[110px] sm:w-[180px] md:w-[260px] h-full absolute left-0 top-0 overflow-hidden">
-          <svg className="w-full h-full" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <pattern id="about-footer-stripes-strip" width="24" height="24" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-                <rect width="12" height="24" fill="#080808" />
-                <rect x="12" width="12" height="24" fill="#00F000" />
-              </pattern>
-            </defs>
-            <rect width="100%" height="100%" fill="url(#about-footer-stripes-strip)" />
-          </svg>
-        </div>
-        <div />
-        <div className="relative z-10">
-          <SocialLinks sizeClass="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7" variant="dark" />
-        </div>
-      </div>
+      <FooterStrip className="mt-auto" />
     </div>
   );
 };

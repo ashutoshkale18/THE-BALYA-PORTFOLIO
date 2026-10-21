@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Navbar } from '../components/common/Navbar';
-import { SocialLinks } from '../components/common/SocialLinks';
-import { ProjectModal } from '../components/common/ProjectModal';
+import { FooterStrip } from '../components/common/FooterStrip';
 import type { ProjectItem } from '../data/portfolio';
 
 // Reusable video component that guarantees autoplay across browsers
@@ -48,8 +48,8 @@ interface WorkPageProps {
 }
 
 export const WorkPage: React.FC<WorkPageProps> = ({ projects, onNavigate }) => {
+  const navigate = useNavigate();
   const [hoveredProject, setHoveredProject] = useState<ProjectItem | null>(null);
-  const [selectedProject, setSelectedProject] = useState<ProjectItem | null>(null);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
   // Mouse tracking for floating preview
@@ -80,9 +80,17 @@ export const WorkPage: React.FC<WorkPageProps> = ({ projects, onNavigate }) => {
           {projects.map((project) => (
             <div
               key={project.id}
+              role="button"
+              tabIndex={0}
               onMouseEnter={() => setHoveredProject(project)}
               onMouseLeave={() => setHoveredProject(null)}
-              onClick={() => setSelectedProject(project)}
+              onClick={() => navigate(`/work/${project.slug}`)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  navigate(`/work/${project.slug}`);
+                }
+              }}
               className="group w-full py-5 sm:py-7 md:py-9 border-b border-neutral-300 flex flex-col lg:flex-row lg:items-center justify-between cursor-pointer transition-colors duration-200 hover:border-[#080808]"
             >
               {/* Project Number + Title */}
@@ -134,7 +142,7 @@ export const WorkPage: React.FC<WorkPageProps> = ({ projects, onNavigate }) => {
               {/* Open Link Indicator */}
               <div className="flex items-center space-x-2 flex-shrink-0 self-end lg:self-center mt-1 lg:mt-0">
                 <span className="font-mono text-xs sm:text-sm text-neutral-500 group-hover:text-[#080808] lowercase tracking-wide transition-colors duration-200">
-                  open link
+                  view project
                 </span>
                 <span className="text-neutral-400 group-hover:text-[#00F000] group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-200 font-mono text-base">
                   ↗
@@ -189,34 +197,8 @@ export const WorkPage: React.FC<WorkPageProps> = ({ projects, onNavigate }) => {
         )}
       </AnimatePresence>
 
-      {/* Interactive Project Detail Modal — multi-media gallery */}
-      <AnimatePresence>
-        {selectedProject && (
-          <ProjectModal
-            project={selectedProject}
-            onClose={() => setSelectedProject(null)}
-          />
-        )}
-      </AnimatePresence>
-
       {/* SECTION 5 — FOOTER */}
-      <div className="w-full h-14 sm:h-16 bg-[#00F000] flex items-center justify-between px-4 sm:px-8 lg:px-12 relative overflow-hidden mt-14 sm:mt-20">
-        <div className="w-[110px] sm:w-[180px] md:w-[260px] h-full absolute left-0 top-0 overflow-hidden">
-          <svg className="w-full h-full" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <pattern id="work-page-stripes" width="32" height="32" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)">
-                <rect width="32" height="32" fill="#00F000" />
-                <rect width="10" height="32" fill="#080808" />
-              </pattern>
-            </defs>
-            <rect width="100%" height="100%" fill="url(#work-page-stripes)" />
-          </svg>
-        </div>
-        <div />
-        <div className="relative z-10">
-          <SocialLinks sizeClass="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7" variant="dark" />
-        </div>
-      </div>
+      <FooterStrip className="mt-14 sm:mt-20" />
     </div>
   );
 };

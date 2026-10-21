@@ -16,12 +16,12 @@ export const BrandMarquee: React.FC<BrandMarqueeProps> = ({ brands }) => {
           {marqueeList.map((brand, idx) => (
             <div
               key={`${brand.name}-${idx}`}
-              className="flex items-center justify-center h-7 sm:h-11 md:h-16 w-24 sm:w-36 md:w-48 flex-shrink-0 grayscale opacity-85 hover:opacity-100 hover:grayscale-0 transition-all duration-300"
+              className="flex items-center justify-center h-10 sm:h-14 md:h-20 w-32 sm:w-44 md:w-56 flex-shrink-0 grayscale opacity-90 hover:opacity-100 hover:grayscale-0 hover:scale-105 transition-all duration-300"
             >
               <img
                 src={brand.logo}
                 alt={brand.name}
-                className="max-h-full max-w-full object-contain"
+                className="max-h-full max-w-full object-contain filter drop-shadow-sm"
                 loading="lazy"
                 decoding="async"
               />

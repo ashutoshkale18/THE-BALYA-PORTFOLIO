@@ -1,4 +1,5 @@
 import { useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import type { ProjectItem } from '../../data/portfolio';
 import { staggerContainer, staggerChild, scaleIn, VIEWPORT_ONCE } from '../../utils/motion';
@@ -14,7 +15,16 @@ export const ProjectPreview: React.FC<ProjectPreviewProps> = ({
   alignment,
   onOpenProject
 }) => {
+  const navigate = useNavigate();
   const videoRef = useRef<HTMLVideoElement>(null);
+
+  const handleNavigateToProject = () => {
+    if (onOpenProject) {
+      onOpenProject(project);
+    } else {
+      navigate(`/work/${project.slug}`);
+    }
+  };
 
   // Force play the video programmatically — browsers can block autoPlay attribute
   useEffect(() => {
@@ -38,7 +48,7 @@ export const ProjectPreview: React.FC<ProjectPreviewProps> = ({
 
   return (
     <motion.div
-      className={`w-full ${containerAlignment} group mb-14 sm:mb-20 md:mb-28`}
+      className={`w-full ${containerAlignment} group mb-10 sm:mb-14 md:mb-16 last:mb-0`}
       variants={staggerContainer(0.12, 0)}
       initial="hidden"
       whileInView="visible"
@@ -47,10 +57,19 @@ export const ProjectPreview: React.FC<ProjectPreviewProps> = ({
       {/* Project Media Container — scroll-triggered scale-in */}
       <motion.div
         variants={scaleIn}
-        onClick={() => onOpenProject?.(project)}
-        className="relative overflow-hidden bg-black cursor-pointer rounded-xs aspect-video group/media"
+        role="button"
+        tabIndex={0}
+        onClick={handleNavigateToProject}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            handleNavigateToProject();
+          }
+        }}
+        className="relative overflow-hidden bg-black cursor-pointer rounded-xs aspect-video group/media focus:outline-none focus:ring-2 focus:ring-[#00F000]"
         whileHover={{ scale: 1.025 }}
         transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+        aria-label={`View project ${project.title}`}
       >
         {project.video ? (
           <video
@@ -94,8 +113,17 @@ export const ProjectPreview: React.FC<ProjectPreviewProps> = ({
       {/* Project Meta Information — staggered */}
       <motion.div variants={staggerChild} className="mt-4 sm:mt-5 space-y-1">
         <div
-          onClick={() => onOpenProject?.(project)}
-          className="flex items-start justify-between cursor-pointer group/title"
+          role="button"
+          tabIndex={0}
+          onClick={handleNavigateToProject}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              handleNavigateToProject();
+            }
+          }}
+          className="flex items-start justify-between cursor-pointer group/title focus:outline-none focus:ring-1 focus:ring-[#00F000]"
+          aria-label={`View project ${project.title}`}
         >
           <motion.h3
             className="font-work text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-[#080808] uppercase tracking-tight group-hover/title:text-[#00F000] transition-colors font-bold"

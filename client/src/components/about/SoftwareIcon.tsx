@@ -7,15 +7,17 @@ interface SoftwareIconProps {
 
 export const SoftwareIcon: React.FC<SoftwareIconProps> = ({ software }) => {
   return (
-    <div className="flex flex-col items-center group w-full max-w-[80px]">
-      <div className="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-xl sm:rounded-2xl bg-black flex items-center justify-center p-2 sm:p-2.5 transition-all duration-300 transform group-hover:scale-105 sm:group-hover:scale-110 group-hover:shadow-[0_0_20px_rgba(0,240,0,0.4)] border border-neutral-800 group-hover:border-[#00F000]">
+    <div className="flex flex-col items-center group w-full max-w-[95px] sm:max-w-[110px]">
+      <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-2xl sm:rounded-3xl bg-[#080808] flex items-center justify-center p-1 sm:p-1.5 transition-all duration-300 transform group-hover:scale-105 group-hover:-translate-y-1.5 group-hover:shadow-[0_0_25px_rgba(0,255,0,0.35)] border border-neutral-800/80 group-hover:border-[#00FF00] overflow-hidden relative">
+        {/* Subtle inner phosphor scanline glow */}
+        <div className="absolute inset-0 bg-gradient-to-b from-white/[0.04] to-transparent pointer-events-none rounded-2xl sm:rounded-3xl" />
         <img
           src={software.icon}
           alt={software.name}
-          className="w-full h-full object-contain filter group-hover:brightness-110 transition-all"
+          className="w-full h-full object-contain scale-[1.38] sm:scale-[1.42] filter group-hover:brightness-125 transition-transform duration-300 group-hover:scale-[1.48]"
         />
       </div>
-      <span className="mt-1.5 sm:mt-2 text-[10px] sm:text-xs font-mono text-neutral-500 opacity-80 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-200 text-center truncate max-w-full">
+      <span className="mt-2 text-[10px] sm:text-xs font-mono font-medium text-neutral-500 group-hover:text-[#00FF00] transition-colors duration-200 text-center truncate max-w-full tracking-wider">
         {software.name}
       </span>
     </div>

@@ -1,8 +1,11 @@
 import { useState, useEffect } from 'react';
+import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { AnimatePresence, MotionConfig, motion } from 'framer-motion';
 import { LandingPage } from './pages/LandingPage';
 import { AboutPage } from './pages/AboutPage';
 import { WorkPage } from './pages/WorkPage';
+import { ProjectDetailPage } from './pages/ProjectDetailPage';
+import { NotFoundPage } from './pages/NotFoundPage';
 import {
   initialProfile,
   initialBrands,
@@ -18,10 +21,23 @@ import type {
 import { fetchProfile, fetchBrands, fetchProjects, fetchSoftwares } from './services/api';
 import { pageEnter } from './utils/motion';
 
-type Route = 'landing' | 'about' | 'work';
+type NavRoute = 'landing' | 'about' | 'work';
+
+/** Ensures the window scrolls to top on any route navigation */
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  }, [pathname]);
+
+  return null;
+}
 
 export function App() {
-  const [route, setRoute] = useState<Route>('landing');
+  const location = useLocation();
+  const navigate = useNavigate();
+
   const [profile, setProfile] = useState<Profile>(initialProfile);
   const [brands, setBrands] = useState<BrandItem[]>(initialBrands);
   const [projects, setProjects] = useState<ProjectItem[]>(initialProjects);
@@ -48,59 +64,108 @@ export function App() {
     loadData();
   }, []);
 
-  const handleNavigate = (newRoute: Route) => {
-    setRoute(newRoute);
+  const handleNavigate = (newRoute: NavRoute) => {
+    const targetPath = newRoute === 'landing' ? '/' : `/${newRoute}`;
+    navigate(targetPath);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
     // MotionConfig: honour prefers-reduced-motion system setting globally
     <MotionConfig reducedMotion="user">
+      <ScrollToTop />
       <div className="w-full min-h-screen bg-[#F4F4F2] text-[#080808] overflow-x-hidden">
         <AnimatePresence mode="wait" initial={false}>
-          {route === 'landing' && (
-            <motion.div
-              key="landing"
-              initial={pageEnter.initial}
-              animate={pageEnter.animate}
-              exit={pageEnter.exit}
-            >
-              <LandingPage
-                brands={brands}
-                projects={projects}
-                onNavigate={handleNavigate}
-              />
-            </motion.div>
-          )}
+          <Routes location={location} key={location.pathname}>
+            {/* Landing Route */}
+            <Route
+              path="/"
+              element={
+                <motion.div
+                  key="landing"
+                  initial={pageEnter.initial}
+                  animate={pageEnter.animate}
+                  exit={pageEnter.exit}
+                >
+                  <LandingPage
+                    brands={brands}
+                    projects={projects}
+                    onNavigate={handleNavigate}
+                  />
+                </motion.div>
+              }
+            />
 
-          {route === 'about' && (
-            <motion.div
-              key="about"
-              initial={pageEnter.initial}
-              animate={pageEnter.animate}
-              exit={pageEnter.exit}
-            >
-              <AboutPage
-                profile={profile}
-                softwares={softwares}
-                onNavigate={handleNavigate}
-              />
-            </motion.div>
-          )}
+            {/* About Route */}
+            <Route
+              path="/about"
+              element={
+                <motion.div
+                  key="about"
+                  initial={pageEnter.initial}
+                  animate={pageEnter.animate}
+                  exit={pageEnter.exit}
+                >
+                  <AboutPage
+                    profile={profile}
+                    softwares={softwares}
+                    onNavigate={handleNavigate}
+                  />
+                </motion.div>
+              }
+            />
 
-          {route === 'work' && (
-            <motion.div
-              key="work"
-              initial={pageEnter.initial}
-              animate={pageEnter.animate}
-              exit={pageEnter.exit}
-            >
-              <WorkPage
-                projects={projects}
-                onNavigate={handleNavigate}
-              />
-            </motion.div>
-          )}
+            {/* Works Index Route */}
+            <Route
+              path="/work"
+              element={
+                <motion.div
+                  key="work"
+                  initial={pageEnter.initial}
+                  animate={pageEnter.animate}
+                  exit={pageEnter.exit}
+                >
+                  <WorkPage
+                    projects={projects}
+                    onNavigate={handleNavigate}
+                  />
+                </motion.div>
+              }
+            />
+
+            {/* Individual Project Detail Route */}
+            <Route
+              path="/work/:slug"
+              element={
+                <motion.div
+                  key={`detail-${location.pathname}`}
+                  initial={pageEnter.initial}
+                  animate={pageEnter.animate}
+                  exit={pageEnter.exit}
+                >
+                  <ProjectDetailPage
+                    projects={projects}
+                    onNavigate={handleNavigate}
+                  />
+                </motion.div>
+              }
+            />
+
+            {/* Styled 404 Not Found Route */}
+            <Route
+              path="*"
+              element={
+                <motion.div
+                  key="not-found"
+                  initial={pageEnter.initial}
+                  animate={pageEnter.animate}
+                  exit={pageEnter.exit}
+                >
+                  <NotFoundPage onNavigate={handleNavigate} />
+                </motion.div>
+              }
+            />
+          </Routes>
         </AnimatePresence>
       </div>
     </MotionConfig>
@@ -108,3 +173,4 @@ export function App() {
 }
 
 export default App;
+

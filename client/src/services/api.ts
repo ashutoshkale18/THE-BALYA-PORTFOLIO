@@ -18,7 +18,7 @@ export async function fetchProfile(): Promise<Profile> {
   try {
     const res = await fetch(`${API_BASE}/profile`, { signal: AbortSignal.timeout(1500) });
     if (res.ok) return await res.json();
-  } catch (e) {
+  } catch {
     // fallback gracefully
   }
   return initialProfile;
@@ -28,7 +28,7 @@ export async function fetchBrands(): Promise<BrandItem[]> {
   try {
     const res = await fetch(`${API_BASE}/brands`, { signal: AbortSignal.timeout(1500) });
     if (res.ok) return await res.json();
-  } catch (e) {
+  } catch {
     // fallback gracefully
   }
   return initialBrands;
@@ -39,7 +39,7 @@ export async function fetchProjects(featuredOnly = false): Promise<ProjectItem[]
     const url = featuredOnly ? `${API_BASE}/projects?featured=true` : `${API_BASE}/projects`;
     const res = await fetch(url, { signal: AbortSignal.timeout(1500) });
     if (res.ok) return await res.json();
-  } catch (e) {
+  } catch {
     // fallback gracefully
   }
   return featuredOnly ? initialProjects.filter(p => p.featured) : initialProjects;
@@ -49,7 +49,7 @@ export async function fetchSoftwares(): Promise<SoftwareItem[]> {
   try {
     const res = await fetch(`${API_BASE}/softwares`, { signal: AbortSignal.timeout(1500) });
     if (res.ok) return await res.json();
-  } catch (e) {
+  } catch {
     // fallback gracefully
   }
   return initialSoftwares;

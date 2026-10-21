@@ -43,8 +43,9 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ item, active }) => {
 
   // Pause when modal unmounts
   useEffect(() => {
+    const el = ref.current;
     return () => {
-      ref.current?.pause();
+      el?.pause();
     };
   }, []);
 
@@ -75,13 +76,10 @@ interface ProjectModalProps {
 export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) => {
   const [index, setIndex] = useState(0);
   const [direction, setDirection] = useState(1);
-  const [isTouchDevice, setIsTouchDevice] = useState(false);
+  const [isTouchDevice] = useState(() => (
+    typeof window !== 'undefined' && ('ontouchstart' in window || navigator.maxTouchPoints > 0)
+  ));
   const galleryRef = useRef<HTMLDivElement>(null);
-
-  // Detect touch (used for arrow visibility only)
-  useEffect(() => {
-    setIsTouchDevice('ontouchstart' in window || navigator.maxTouchPoints > 0);
-  }, []);
 
   // Reset gallery index when project changes
   useEffect(() => {
@@ -105,10 +103,11 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) 
     setIndex((i) => (i - 1 + total) % total);
   }, [total]);
 
+  const isCurrentVideo = current?.type === 'video';
   // Click left/right half to navigate (no custom cursor, just normal pointer)
   const handleGalleryClick = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     // Ignore clicks on native video controls region (bottom ~80px of video)
-    if (current?.type === 'video') {
+    if (isCurrentVideo) {
       const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
       const y = e.clientY - rect.top;
       if (y > rect.height - 80) return;
@@ -117,7 +116,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) 
     const x = e.clientX - rect.left;
     if (x < rect.width / 2) goPrev();
     else goNext();
-  }, [goPrev, goNext, current]);
+  }, [goPrev, goNext, isCurrentVideo]);
 
   // Keyboard navigation
   useEffect(() => {

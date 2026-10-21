@@ -29,7 +29,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
       <BrandMarquee brands={brands} />
 
       {/* SECTION 4 — GREEN DECORATIVE DIVIDER */}
-      <GreenDivider heightClass="h-7 sm:h-11" />
+      <GreenDivider heightClass="h-12 sm:h-16 md:h-20" />
 
       {/* SECTIONS 5, 6, 7 — FEATURED PROJECTS 01, 02, 03 */}
       <FeaturedProjects projects={projects} />
